@@ -70,18 +70,18 @@ exports.updatePost = (req, res) => {
     // Proceed with updating the post if the post and user exist
     const stmt = db.prepare('UPDATE posts SET title = ?, content = ?, user_id = ? WHERE id = ?');
     stmt.run(title, content, user_id, postId);
-    res.json({ id: postId, title, content, user_id });
+    res.json({ message: `Post with ID ${postId} updated successfully`, id: postId, title, content, user_id });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
 exports.deletePost = (req, res) => {
-  const stmt = db.prepare('DELETE FROM posts WHERE id = ?');
-  const result = stmt.run(req.params.id);
-  if (result.changes > 0) {
-    res.status(204).send();
-  } else {
-    res.status(404).json({ error: 'Post not found' });
-  }
-};
+    const stmt = db.prepare('DELETE FROM posts WHERE id = ?');
+    const result = stmt.run(req.params.id);
+    if (result.changes > 0) {
+      res.status(200).json({ message: `Post with ID ${req.params.id} deleted successfully` });
+    } else {
+      res.status(404).json({ error: 'Post not found' });
+    }
+  };  

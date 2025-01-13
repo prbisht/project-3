@@ -56,21 +56,21 @@ exports.updateUser = (req, res) => {
     // Proceed with the update if the email is not taken
     const stmt = db.prepare('UPDATE users SET username = ?, email = ? WHERE id = ?');
     stmt.run(username, email, userId);
-    res.json({ id: userId, username, email });
+    res.json({ message: `User with ID ${userId} updated successfully`, id: userId, username, email });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
 exports.deleteUser = (req, res) => {
-  const stmt = db.prepare('DELETE FROM users WHERE id = ?');
-  const result = stmt.run(req.params.id);
-  if (result.changes > 0) {
-    res.status(204).send();
-  } else {
-    res.status(404).json({ error: 'User not found' });
-  }
-};
+    const stmt = db.prepare('DELETE FROM users WHERE id = ?');
+    const result = stmt.run(req.params.id);
+    if (result.changes > 0) {
+      res.status(200).json({ message: `User with ID ${req.params.id} deleted successfully` });
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  };  
 
 exports.getPostsByUser = (req, res) => {
   const userId = req.params.id;
